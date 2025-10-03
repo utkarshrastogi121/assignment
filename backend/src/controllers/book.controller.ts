@@ -13,14 +13,15 @@ interface PopulatedReview {
 
 export const createBook = async (req: Request, res: Response) => {
   try {
-    const { title, author, description, coverImage } = req.body;
+    const { title, author, description, genre, publishedYear, user } = req.body;
     if (!title || !author)
       return res.status(400).json({ message: "Title and author required" });
     const book = new Book({
       title,
       author,
       description,
-      coverImage,
+      genre,
+      publishedYear,
       user: (req as any).user.id,
     });
     await book.save();
@@ -30,6 +31,7 @@ export const createBook = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 export const getBooks = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page || "1");
@@ -68,6 +70,7 @@ export const getBooks = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 export const getBookById = async (req: Request, res: Response) => {
   try {
     const bookId = req.params.id;
@@ -77,25 +80,27 @@ export const getBookById = async (req: Request, res: Response) => {
     const book = await Book.findById(bookId).lean();
     if (!book) return res.status(404).json({ message: "Book not found" });
 
-    // Fetch reviews and populate user
     const reviews = await Review.find({ book: bookId })
       .populate<{ user: { _id: string; name?: string } }>("user", "name")
       .sort({ createdAt: -1 })
       .lean();
 
-    // Convert _id to string
     const reviewsWithStringId: PopulatedReview[] = reviews.map((r) => ({
       _id: r._id.toString(),
       rating: r.rating,
       text: r.text,
-      user: r.user
-        ? { _id: r.user._id.toString(), name: r.user.name }
-        : null,
+      user: r.user ? { _id: r.user._id.toString(), name: r.user.name } : null,
     }));
 
     const agg = await Review.aggregate([
       { $match: { book: new mongoose.Types.ObjectId(bookId) } },
-      { $group: { _id: "$book", avgRating: { $avg: "$rating" }, count: { $sum: 1 } } },
+      {
+        $group: {
+          _id: "$book",
+          avgRating: { $avg: "$rating" },
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     res.json({
@@ -109,31 +114,40 @@ export const getBookById = async (req: Request, res: Response) => {
   }
 };
 
-
 export const updateBook = async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) return res.status(404).json({ message: "Book not found" });
-    if (book.user && book.user.toString() !== (req as any).user.id) return;
-    res.status(403).json({ message: "Not allowed" });
-    const { title, author, description, coverImage } = req.body;
+
+    // Check ownership
+    if (book.user && book.user.toString() !== (req as any).user.id) {
+      return res.status(403).json({ message: "Not allowed" }); // Return immediately after sending response
+    }
+
+    const { title, author, description, genre, publishedYear } = req.body;
+
     if (title) book.title = title;
     if (author) book.author = author;
     if (description) book.description = description;
-    if (coverImage) book.coverImage = coverImage;
+    if (genre) book.genre = genre;
+    if (publishedYear) book.publishedYear = publishedYear;
+
     await book.save();
-    res.json(book);
+    return res.json(book); // Only one response
   } catch (err) {
     logger.error("Update book error " + (err as Error).message);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" }); // Only one response
   }
 };
+
+
 export const deleteBook = async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) return res.status(404).json({ message: "Book not found" });
-    if (book.user && book.user.toString() !== (req as any).user.id) return;
-    res.status(403).json({ message: "Not allowed" });
+    if (book.user && book.user.toString() !== (req as any).user.id) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
     await book.deleteOne();
     await Review.deleteMany({ book: req.params.id });
     res.json({ message: "Book removed" });

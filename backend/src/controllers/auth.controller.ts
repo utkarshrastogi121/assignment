@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 import logger from "../logger/logger";
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
@@ -26,6 +27,7 @@ export const register = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;

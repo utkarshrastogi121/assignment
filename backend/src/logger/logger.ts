@@ -1,9 +1,11 @@
 import winston from "winston";
 import path from "path";
+
 const { combine, timestamp, printf, colorize } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} [${level}]: ${message}`;
 });
+
 const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), logFormat),
@@ -25,4 +27,6 @@ const logger = winston.createLogger({
     }),
   ],
 });
+
+
 export default logger;

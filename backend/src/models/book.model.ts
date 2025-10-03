@@ -5,7 +5,8 @@ export interface IBook extends Document {
   title: string;
   author: string;
   description?: string;
-  coverImage?: string;
+  genre?: string;
+  publishedYear?: string;
   user: Types.ObjectId;
 }
 
@@ -14,9 +15,11 @@ const BookSchema = new Schema<IBook>(
     title: { type: String, required: true },
     author: { type: String, required: true },
     description: { type: String },
-    coverImage: { type: String },
+    genre: { type: String },
+    publishedYear: {type: String},
     user: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
+
 export default model<IBook>("Book", BookSchema);

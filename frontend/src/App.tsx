@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import BookList from "./pages/BookList";
-import BookDetails from "./pages/BookDetails";
-import AddBook from "./pages/AddBook";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import BookList from "./components/BookList";
+import BookDetails from "./components/BookDetails";
+import AddBook from "./components/AddBook";
+import Profile from "./components/Profile";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 interface Book {
   _id: string;
@@ -17,7 +18,6 @@ interface Book {
 function App() {
   const [books, setBooks] = useState<Book[]>([]);
 
-  // Function to update a book's rating
   const updateBookRating = (bookId: string, avgRating: number) => {
     setBooks((prevBooks) =>
       prevBooks.map((b) => (b._id === bookId ? { ...b, avgRating } : b))
@@ -35,6 +35,15 @@ function App() {
           element={
             <ProtectedRoute>
               <BookList books={books} setBooks={setBooks} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

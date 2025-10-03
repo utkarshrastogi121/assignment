@@ -7,11 +7,14 @@ export default function AddBook() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
+  const [genre, setGenre] = useState("");
+  const [publishedYear, setPublishedYear] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await API.post("/books", { title, author, description });
+    await API.post("/books", { title, author, description, genre, publishedYear });
     navigate("/");
   };
 
@@ -39,11 +42,28 @@ export default function AddBook() {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
         />
+        
         <textarea
           placeholder="Description"
           className="w-full p-2 border rounded"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Genre"
+          className="w-full p-2 border rounded"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Published Year"
+          className="w-full p-2 border rounded"
+          value={publishedYear}
+          onChange={(e) => setPublishedYear(e.target.value)}
         />
         <button className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded cursor-pointer">
           Add Book
