@@ -145,7 +145,7 @@ export default function BookDetails({ updateBookRating }: Props) {
 
   return (
     <div className="p-6 max-w-full mx-auto space-y-10">
-      {/* Book Info */}
+      {/* book info */}
       <div className="bg-gradient-to-r from-blue-300 to-purple-400 border border-gray-200 rounded-xl shadow-sm p-6 space-y-3">
         <h1 className="text-3xl font-bold text-gray-900">{book.title || "Untitled Book"}</h1>
         <p className="flex items-center gap-2 text-gray-700">
@@ -267,7 +267,7 @@ export default function BookDetails({ updateBookRating }: Props) {
         )}
       </div>
 
-      {/* Add New Review */}
+      {/* New Review */}
       <form onSubmit={handleReview} className="bg-white shadow-lg border-none rounded-lg p-6 space-y-4">
         <h3 className="flex items-center gap-2 text-xl font-semibold text-gray-800">
           <PencilLine size={20} /> Write a Review

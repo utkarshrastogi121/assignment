@@ -40,7 +40,6 @@ const ProfilePage: React.FC = () => {
     publishedYear: "",
   });
 
-  // Fetch profile data
   const fetchProfile = useCallback(async () => {
     setLoading(true);
     try {
@@ -59,7 +58,6 @@ const ProfilePage: React.FC = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Delete book
   const handleDeleteBook = async (bookId: string) => {
     if (!confirm("Are you sure you want to delete this book?")) return;
     try {
@@ -70,7 +68,6 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  // Open edit modal
   const handleEditBook = (book: Book) => {
     setEditingBook(book);
     setEditForm({
@@ -82,14 +79,12 @@ const ProfilePage: React.FC = () => {
     });
   };
 
-  // Handle form change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-  // Submit edit
   const handleSaveEdit = async () => {
     if (!editingBook) return;
     try {
@@ -119,7 +114,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="max-w-full mx-auto p-8 shadow-xl rounded-2xl">
-      {/* User Info */}
+      {/* user information */}
       <div className="flex items-center gap-4 mb-8">
         <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
           <User className="w-8 h-8 text-green-700" />
@@ -207,11 +202,9 @@ const ProfilePage: React.FC = () => {
         )}
       </div>
 
-      {/* Edit Modal */}
-      {/* Edit Modal */}
+      {/* edit modal */}
       {editingBook && (
         <div className="fixed inset-0 flex justify-center items-center z-50">
-          {/* Blur background */}
           <div className="absolute inset-0  bg-white/60"></div>
 
           <div className="relative bg-white border border-gray-300 p-6 rounded-2xl w-full max-w-md z-10">

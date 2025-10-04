@@ -12,15 +12,15 @@ interface Book {
   _id: string;
   title: string;
   author: string;
-  avgRating: number;
+  averageRating: number;
 }
 
 function App() {
   const [books, setBooks] = useState<Book[]>([]);
 
-  const updateBookRating = (bookId: string, avgRating: number) => {
+  const updateBookRating = (bookId: string, averageRating: number) => {
     setBooks((prevBooks) =>
-      prevBooks.map((b) => (b._id === bookId ? { ...b, avgRating } : b))
+      prevBooks.map((b) => (b._id === bookId ? { ...b, averageRating } : b))
     );
   };
 
