@@ -13,9 +13,10 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User already exists" });
     const user = new User({ name, email, password });
     await user.save();
+    const jwtSecret = process.env.JWT_SECRET as jwt.Secret;
     const token = jwt.sign(
       { user: { id: user._id } },
-      process.env.JWT_SECRET ?? "",
+      jwtSecret,
       { expiresIn: process.env.JWT_EXPIRES_IN ?? "7d" }
     );
     res.json({
