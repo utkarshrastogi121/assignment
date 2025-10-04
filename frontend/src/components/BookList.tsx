@@ -158,13 +158,13 @@ export default function BookList({ books, setBooks }: Props) {
       <div className="flex gap-3 mt-8 justify-center flex-wrap">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white shadow-md rounded w-full sm:w-auto"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white shadow-md rounded w-full sm:w-auto cursor-pointer"
         >
           Prev
         </button>
         <button
           onClick={() => setPage((p) => p + 1)}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white shadow-md rounded w-full sm:w-auto"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white shadow-md rounded w-full sm:w-auto cursor-pointer"
         >
           Next
         </button>
