@@ -1,37 +1,47 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  ForeignKey,
-} from "sequelize-typescript";
-import { Student } from "./Student.js";
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../config/database";
 
-@Table({
-  indexes: [
-    {
-      unique: true,
-      fields: ["studentId", "month"],
-    },
-  ],
-})
 export class MonthlyFee extends Model {
-  @ForeignKey(() => Student)
-  @Column(DataType.INTEGER)
-  studentId!: number;
-
-  @Column(DataType.STRING)
-  month!: string;
-
-  @Column(DataType.INTEGER)
-  tuitionFee!: number;
-
-  @Column(DataType.INTEGER)
-  transportFee!: number;
-
-  @Column(DataType.INTEGER)
-  totalFee!: number;
-
-  @Column({ defaultValue: "PENDING" })
-  status!: string;
+  declare id: number;
+  declare studentId: number;
+  declare month: string;
+  declare tuitionFee: number;
+  declare transportFee: number;
+  declare totalFee: number;
+  declare status: string;
 }
+
+MonthlyFee.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    studentId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    month: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tuitionFee: DataTypes.INTEGER,
+    transportFee: DataTypes.INTEGER,
+    totalFee: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "PENDING",
+    },
+  },
+  {
+    sequelize,
+    modelName: "MonthlyFee",
+    indexes: [
+      {
+        unique: true,
+        fields: ["studentId", "month"],
+      },
+    ],
+  }
+);

@@ -1,18 +1,31 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-} from "sequelize-typescript";
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../config/database";
 
-@Table
 export class User extends Model {
-  @Column({ type: DataType.STRING, unique: true })
-  email!: string;
-
-  @Column(DataType.STRING)
-  password!: string;
-
-  @Column(DataType.ENUM("ADMIN", "STUDENT"))
-  role!: "ADMIN" | "STUDENT";
+  declare id: number;
+  declare email: string;
+  declare password: string;
+  declare role: "ADMIN" | "STUDENT";
 }
+
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
+    password: DataTypes.STRING,
+    role: {
+      type: DataTypes.ENUM("ADMIN", "STUDENT"),
+    },
+  },
+  {
+    sequelize,
+    modelName: "User",
+  }
+);

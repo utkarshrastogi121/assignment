@@ -1,5 +1,5 @@
 import type { Response, NextFunction } from "express";
-import type { AuthRequest } from "./auth.middleware.js";
+import type { AuthRequest } from "./auth.middleware";
 
 export const roleMiddleware = (role: "ADMIN" | "STUDENT") => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
