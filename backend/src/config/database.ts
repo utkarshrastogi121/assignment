@@ -3,18 +3,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME as string,
-  process.env.DB_USER as string,
-  process.env.DB_PASSWORD as string,
-  {
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-    logging: false,
-    dialectOptions: {}
-  }
-);
+console.log("DB URL:", process.env.DATABASE_URL);
+const sequelize = new Sequelize(process.env.DATABASE_URL!, {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  logging: false,
+});
 
 export async function connectDB(): Promise<void> {
   try {
