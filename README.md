@@ -32,6 +32,13 @@ A full-stack **Student Fee Management System** built using the **PERN stack**.
 
 ---
 
+## 🔗 Live Links
+
+- **Frontend:** https://mysittu.vercel.app/
+- **Backend:** https://mysittu.onrender.com
+
+---
+
 ## 🛠 Tech Stack
 
 ### Frontend
