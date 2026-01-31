@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addStudent, getStudents } from "../controller/student.controller";
+import { addStudent, getStudents,  getStudentById, } from "../controller/student.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { roleMiddleware } from "../middleware/role.middleware";
 
@@ -11,5 +11,6 @@ router.use(roleMiddleware("ADMIN"));
 router.post("/", addStudent);
 
 router.get("/", getStudents);
+router.get("/:id", getStudentById);
 
 export default router;

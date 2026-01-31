@@ -10,16 +10,22 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const auth = req.headers.authorization;
-  if (!auth) return res.status(401).json({ message: "Unauthorized" });
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-  const token = auth.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Invalid token" });
-  const decoded = verifyToken(token);
+  const token = authHeader.split(" ")[1];
 
-  if (typeof decoded === "string")
+  try {
+    const decoded = verifyToken(token) as AuthRequest["user"];
+
+    req.user = decoded;
+
+    console.log("USER FROM TOKEN:", decoded);
+
+    next();
+  } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
-
-  req.user = decoded as any;
-  next();
+  }
 };

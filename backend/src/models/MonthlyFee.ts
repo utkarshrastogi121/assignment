@@ -4,12 +4,14 @@ import { sequelize } from "../config/database";
 export class MonthlyFee extends Model {
   declare id: number;
   declare studentId: number;
-  declare month: string;
+  declare month: number; // 1–12
+  declare year: number;
   declare tuitionFee: number;
   declare transportFee: number;
   declare totalFee: number;
   declare status: string;
 }
+
 
 MonthlyFee.init(
   {
@@ -23,7 +25,11 @@ MonthlyFee.init(
       allowNull: false,
     },
     month: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    year: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     tuitionFee: DataTypes.INTEGER,
@@ -40,8 +46,9 @@ MonthlyFee.init(
     indexes: [
       {
         unique: true,
-        fields: ["studentId", "month"],
+        fields: ["studentId", "month", "year"],
       },
     ],
   }
 );
+
